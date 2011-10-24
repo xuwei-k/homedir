@@ -6,4 +6,6 @@
 !/.vim
 !/.vimprojects
 !/.gitignore
+!/.sbt/plugins/project/MyPlugin.scala
+!/.sbt/plugins/build.sbt
 
