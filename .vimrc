@@ -14,3 +14,5 @@ augroup END
 :hi clear CursorLine
 :hi CursorLine gui=underline
 
+autocmd BufWritePre * :%s/\s\+$//ge
+autocmd BufWritePre * :%s/\t/  /ge
