@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/home/kenji/xuwei-k-twitter4z/master'
+let g:netrw_dirhist_2='/home/kenji/open-follow/openfollow-full/target/scala-2.9.1/classes.sxr/jp'
+let g:netrw_dirhist_3='/home/kenji/heroku-sampie1/src/main/scala'
+let g:netrw_dirhist_4='/home/kenji/heroku-sample3/project'
+let g:netrw_dirhist_5='/home/kenji/scala-compiler-sxr/target/scala-2.9.1/classes/scala/tools/nsc'
+let g:netrw_dirhist_6='/home/kenji/xuwei-k-browse/master'
+let g:netrw_dirhist_7='/home/kenji/sxr-test/target/scala-2.9.1/classes.sxr'
+let g:netrw_dirhist_8='/home/kenji/.heroku'
+let g:netrw_dirhist_9='/home/kenji/.vim/.vimfiles'
