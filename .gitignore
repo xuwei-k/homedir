@@ -8,4 +8,5 @@
 !/.gitignore
 !/.sbt/plugins/project/MyPlugin.scala
 !/.sbt/plugins/build.sbt
+!/.sbt/growl/icons/
 
