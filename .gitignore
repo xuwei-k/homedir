@@ -11,3 +11,5 @@
 !/.sbt/growl/icons/
 !/.ctags
 
+/.vim/.netrwhist
+
