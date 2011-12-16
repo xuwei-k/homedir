@@ -1,5 +1,4 @@
 alias cd=project
-alias ls=projects
 alias c=compile
 alias t=test
 alias r=run
