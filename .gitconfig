@@ -1,5 +1,9 @@
 [user]
-	name = xuwei-k
-	email = 6b656e6a69@gmail.com
+  name = xuwei-k
+  email = 6b656e6a69@gmail.com
 [color]
-	ui = true
+  ui = true
+[core]
+  editor = vim
+[alias]
+  log = log --graph
