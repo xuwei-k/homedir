@@ -5,5 +5,5 @@
   ui = true
 [core]
   editor = vim
+  excludesfile = ~/.gitexcludes
 [alias]
-  log = log --graph
