@@ -1,5 +1,6 @@
 set number
 set encoding=utf-8
+:syntax on
 autocmd BufNewFile,BufRead *.sbt set filetype=scala
 
 set list
