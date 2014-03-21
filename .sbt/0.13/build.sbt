@@ -50,6 +50,11 @@ initialCommands in console := {
   )
 }
 
+resolvers ++= {
+  if(name.value == "ivy-console") Opts.resolver.sonatypeReleases :: Nil
+  else Nil
+}
+
 scalacOptions := {
   if(name.value == "ivy-console") Seq("-deprecation", "-language:_")
   else scalacOptions.value
