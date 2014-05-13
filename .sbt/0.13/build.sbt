@@ -23,10 +23,11 @@ shellPrompt in ThisBuild := { state =>
   } + Project.extract(state).currentRef.project + branch + " > "
 }
 
-onLoadMessage <<= (name,crossVersion,scalaVersion,scalaBinaryVersion,onLoadMessage){
-  (name,crossV,scalaV,binaryV,currentMessage) =>
-  println(name + "\nscalaVersion = "+ scalaV + ", crossVersion = " + crossV + ", binaryVersion = " + binaryV + "\n")
-  currentMessage
+onLoadMessage := {
+  println(s"${name.value} ${thisProject.value.id}")
+  println(s"scalaVersion = ${scalaVersion.value}, crossVersion = ${crossVersion.value}, binaryVersion = ${scalaBinaryVersion.value}")
+  println()
+  onLoadMessage.value
 }
 
 def containsScalaz(modules: Seq[ModuleID]) =
