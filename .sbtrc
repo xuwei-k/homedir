@@ -5,3 +5,5 @@ alias t=test
 alias r=run
 alias tc=test:compile
 alias to=test-only
+alias tq=test-quick
+alias genIdea=;reload plugins;set addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.6.0");session save;reload return;gen-idea
