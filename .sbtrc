@@ -8,3 +8,4 @@ alias to=test-only
 alias tq=test-quick
 alias genIdea=;reload plugins;set addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.6.0");session save;reload return;gen-idea
 alias sbtUpdates=;reload plugins;set addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.6");session save;reload return;dependencyUpdates
+alias dependencyGraphPlugin=;reload plugins;set addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.7.4");session save;reload return;set net.virtualvoid.sbt.graph.Plugin.graphSettings;dependencyGraph
