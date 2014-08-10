@@ -10,3 +10,4 @@ alias gen-idea-plugin=;reload plugins;set addSbtPlugin("com.github.mpeltonen" % 
 alias dependencyUpdatesPlugin=;reload plugins;set addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.6");session save;reload return;dependencyUpdates
 alias dependencyGraphPlugin=;reload plugins;set addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.7.4");session save;reload return;set net.virtualvoid.sbt.graph.Plugin.graphSettings;dependencyGraph
 alias dependencySvgPlugin=;reload plugins;set addSbtPlugin("com.gilt" % "sbt-dependency-graph-sugar" % "0.7.4");session save;reload return;dependencySvgView
+alias classDiagramPlugin=;reload plugins;set addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.1.2");session save;reload return;set diagram.Plugin.classDiagramSettings;session save
