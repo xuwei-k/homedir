@@ -43,8 +43,22 @@ def time[A](a: => A): A = {
 }
 """
 
+val timeMacro = """
+object TimeMacro {
+  import scala.language.experimental.macros
+  import scala.reflect.macros.blackbox.Context
+  def timeM[A](a: A): A = macro TimeMacro.timeImpl[A]
+  def timeImpl[A](c: Context)(a: c.Tree): c.Tree = {
+    import c.universe._
+    val s, r = TermName(c.freshName())
+    q"System.gc; val $s = System.nanoTime; val $r = $a; println((System.nanoTime - $s) / 1000000.0); $r"
+  }
+}
+import TimeMacro.timeM
+"""
+
 initialCommands in console := {
-  (initialCommands in console).value ++ timeFunc ++ (
+  (initialCommands in console).value ++ timeFunc ++ (if(scalaVersion.value.startsWith("2.11")) timeMacro else "") ++ (
     if(name.value == "scalaz-core" || containsScalaz(libraryDependencies.value)){
       """import scalaz._, std.AllInstances._, std.AllFunctions._; println("\n" + BuildInfo.version + "\n")"""
     }else ""
