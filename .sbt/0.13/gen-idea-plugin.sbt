@@ -17,4 +17,3 @@ commands += BasicCommands.newAlias(
   "openIdea",
   s"""eval sys.process.Process("/Applications/IntelliJ IDEA 13 CE.app/Contents/MacOS/idea" :: "${(baseDirectory in LocalRootProject).value}" :: Nil).run(sys.process.ProcessLogger(_ => ())))"""
 )
-"""
