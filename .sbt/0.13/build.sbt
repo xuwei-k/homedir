@@ -91,10 +91,10 @@ def checkPom(pom: xml.Node): List[String] = {
   }
 }
 
-val validatePom = taskKey[Boolean]("validate pom.xml")
+val validatePom = taskKey[Option[Boolean]]("validate pom.xml")
 
-validatePom := {
-  val errors = checkPom(xml.XML.loadFile(makePom.value))
+validatePom := makePom.?.value.map{ f =>
+  val errors = checkPom(xml.XML.loadFile(f))
   errors.foreach{ e =>
     streams.value.log.error("missing tag " + e)
   }
@@ -121,3 +121,9 @@ commands += BasicCommands.newAlias(
   "openIdea",
   s"""eval {sys.process.Process("/Applications/IntelliJ IDEA 13 CE.app/Contents/MacOS/idea" :: "${(baseDirectory in LocalRootProject).value}" :: Nil).run(sys.process.ProcessLogger(_ => ()));()}"""
 )
+
+TaskKey[Unit]("showDoc") in Compile := {
+  val _ = (doc in Compile).?.value
+  val out = (target in doc in Compile).value
+  java.awt.Desktop.getDesktop.open(out / "index.html")
+}
