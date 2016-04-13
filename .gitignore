@@ -8,7 +8,6 @@
 !/.gitignore
 !/.sbt/plugins/project/MyPlugin.scala
 !/.sbt/plugins/build.sbt
-!/.sbt/growl/icons/
 !/.sbt/0.13/build.sbt
 !/.ctags
 !/.gitconfig
