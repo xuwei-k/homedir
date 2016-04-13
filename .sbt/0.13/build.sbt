@@ -18,7 +18,7 @@ shellPrompt in ThisBuild := { state =>
   }
   {
     if(changed((baseDirectory in ThisBuild).value, buildFiles.value))
-      scala.Console.RED + "\nbuild files changed. please reload project\n\n" + scala.Console.RESET
+      "   build files changed. please reload project   "
     else ""
   } + Project.extract(state).currentRef.project + branch + " > "
 }
@@ -119,7 +119,7 @@ commands += Command("git")(_ => gitCommandParser) {case (state, ( cmd , params )
 
 commands += BasicCommands.newAlias(
   "openIdea",
-  s"""eval {sys.process.Process("/Applications/IntelliJ IDEA 13 CE.app/Contents/MacOS/idea" :: "${(baseDirectory in LocalRootProject).value}" :: Nil).run(sys.process.ProcessLogger(_ => ()));()}"""
+  s"""eval {sys.process.Process("/Applications/IntelliJ IDEA CE.app/Contents/MacOS/idea" :: "${(baseDirectory in LocalRootProject).value}" :: Nil).run(sys.process.ProcessLogger(_ => ()));()}"""
 )
 
 TaskKey[Unit]("showDoc") in Compile := {
@@ -127,3 +127,49 @@ TaskKey[Unit]("showDoc") in Compile := {
   val out = (target in doc in Compile).value
   java.awt.Desktop.getDesktop.open(out / "index.html")
 }
+
+
+val jarSize = TaskKey[Long]("jarSize")
+
+jarSize := {
+  import sbinary.DefaultProtocol._
+  val s = streams.value.log
+  (packageBin in Compile).?.value.map{ jar =>
+    val current = jar.length
+    val id = thisProject.value.id
+    val currentSize = s"[$id] current $current"
+    jarSize.previous match {
+      case Some(previous) =>
+        s.info(s"$currentSize, previous $previous, diff ${current - previous}")
+      case None =>
+        s.info(currentSize)
+    }
+    current
+  }.getOrElse(-1)
+}
+
+def addGlobalPlugin(moduleId: String, taskName: String): Seq[Def.Setting[_]] = {
+  val removeCommand= "removeTemporary" + taskName;
+  def tempPluginDotSbtFile(base: File) =
+    base / "project" / ("temporary" + taskName + ".sbt");
+  Seq(
+    TaskKey[Unit](removeCommand) := {
+      val f = tempPluginDotSbtFile((baseDirectory in LocalRootProject).value)
+      IO.delete(f)
+    },
+    commands += Command.command(taskName + "Plugin"){ state =>
+      val extracted = Project.extract(state)
+      val f = tempPluginDotSbtFile(extracted.get(baseDirectory in LocalRootProject))
+      IO.write(f, "addSbtPlugin(" + moduleId + ")")
+      "reload" :: taskName :: removeCommand :: "reload" :: state
+    }
+  )
+}
+
+addGlobalPlugin(""" "com.gilt" % "sbt-dependency-graph-sugar" % "0.7.5-1" """, "dependencySvgView")
+
+addGlobalPlugin(""" "com.dwijnand.sbtprojectgraph" % "sbt-project-graph" % "0.1.0" """, "projectsGraphDot")
+
+addGlobalPlugin(""" "com.timushev.sbt" % "sbt-updates" % "0.1.10" """, "dependencyUpdates")
+
+addGlobalPlugin(""" "com.github.mpeltonen" % "sbt-idea" % "1.6.0" """, "gen-idea")
