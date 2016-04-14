@@ -18,10 +18,14 @@ shellPrompt in ThisBuild := { state =>
   }
   {
     if(changed((baseDirectory in ThisBuild).value, buildFiles.value))
+      // TODO https://github.com/sbt/sbt/issues/2480
+      // scala.Console.RED + "\nbuild files changed. please reload project\n\n" + scala.Console.RESET
       "   build files changed. please reload project   "
     else ""
   } + Project.extract(state).currentRef.project + branch + " > "
 }
+
+fullResolvers ~= {_.filterNot(_.name == "jcenter")}
 
 onLoadMessage := {
   println(s"${name.value} ${thisProject.value.id}")
@@ -117,10 +121,21 @@ commands += Command("git")(_ => gitCommandParser) {case (state, ( cmd , params )
   state
 }
 
-commands += BasicCommands.newAlias(
-  "openIdea",
-  s"""eval {sys.process.Process("/Applications/IntelliJ IDEA CE.app/Contents/MacOS/idea" :: "${(baseDirectory in LocalRootProject).value}" :: Nil).run(sys.process.ProcessLogger(_ => ()));()}"""
-)
+def openIdea(ideaCommandName: String, n: String) = {
+  commands += BasicCommands.newAlias(
+    ideaCommandName,
+    s"""eval {sys.process.Process("/Applications/IntelliJ IDEA $n.app/Contents/MacOS/idea" :: "${(baseDirectory in LocalRootProject).value}" :: Nil).run(sys.process.ProcessLogger(_ => ()));()}"""
+  )
+}
+
+openIdea("openIdea13", "13 CE")
+ 
+openIdea("openIdea14", "14 CE")
+
+openIdea("openIdea15", "15 CE")
+ 
+openIdea("openIdea", "CE")
+
 
 TaskKey[Unit]("showDoc") in Compile := {
   val _ = (doc in Compile).?.value
@@ -128,6 +143,16 @@ TaskKey[Unit]("showDoc") in Compile := {
   java.awt.Desktop.getDesktop.open(out / "index.html")
 }
 
+pomPostProcess := { node =>
+  import scala.xml._
+  import scala.xml.transform._
+  def stripIf(f: Node => Boolean) = new RewriteRule {
+    override def transform(n: Node) =
+      if (f(n)) NodeSeq.Empty else n
+  }
+  val stripTestScope = stripIf { n => n.label == "dependency" && (n \ "scope").text == "test" }
+  new RuleTransformer(stripTestScope).transform(node)(0)
+}
 
 val jarSize = TaskKey[Long]("jarSize")
 
