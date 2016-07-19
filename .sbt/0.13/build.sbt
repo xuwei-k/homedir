@@ -18,9 +18,12 @@ shellPrompt in ThisBuild := { state =>
   }
   {
     if(changed((baseDirectory in ThisBuild).value, buildFiles.value))
-      // TODO https://github.com/sbt/sbt/issues/2480
-      // scala.Console.RED + "\nbuild files changed. please reload project\n\n" + scala.Console.RESET
-      "   build files changed. please reload project   "
+      if(sbtVersion.value == "0.13.11") {
+        // https://github.com/sbt/sbt/issues/2480
+        "   build files changed. please reload project   "
+      } else {
+        scala.Console.RED + "Build files changed. Please reload." + scala.Console.RESET + "\n"
+      }
     else ""
   } + Project.extract(state).currentRef.project + branch + " > "
 }
