@@ -31,9 +31,11 @@ shellPrompt in ThisBuild := { state =>
 fullResolvers ~= {_.filterNot(_.name == "jcenter")}
 
 onLoadMessage := {
-  println(s"${name.value} ${thisProject.value.id}")
-  println(s"scalaVersion = ${scalaVersion.value}, crossVersion = ${crossVersion.value}, binaryVersion = ${scalaBinaryVersion.value}")
-  println()
+  val x = List(
+    s"${name.value} ${thisProject.value.id}",
+    s"scalaVersion = ${scalaVersion.value}, crossVersion = ${crossVersion.value}, binaryVersion = ${scalaBinaryVersion.value}\n"
+  ).mkString("\n")
+  println(x)
   onLoadMessage.value
 }
 
