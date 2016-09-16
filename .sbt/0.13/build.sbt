@@ -201,5 +201,3 @@ addGlobalPlugin(""" "com.gilt" % "sbt-dependency-graph-sugar" % "0.7.5-1" """, "
 addGlobalPlugin(""" "com.dwijnand.sbtprojectgraph" % "sbt-project-graph" % "0.1.0" """, "projectsGraphDot")
 
 addGlobalPlugin(""" "com.timushev.sbt" % "sbt-updates" % "0.1.10" """, "dependencyUpdates")
-
-addGlobalPlugin(""" "com.github.mpeltonen" % "sbt-idea" % "1.6.0" """, "gen-idea")
