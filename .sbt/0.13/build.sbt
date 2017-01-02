@@ -3,7 +3,7 @@ val buildFiles = SettingKey[Map[File, Seq[Byte]]]("build-files")
 buildFiles := getBuildFiles((baseDirectory in ThisBuild).value)
 
 def getBuildFiles(base: File) =
-  ((base * "*.sbt") +++ ((base / "project") ** ("*.scala" | "*.sbt"))).get.map{
+  ((base * "*.sbt") +++ ((base / "project") ** ("*.scala" | "*.sbt"))).get.filter(_.isFile).map{
     f => f -> collection.mutable.WrappedArray.make[Byte](Hash(f))
   }.toMap
 
@@ -200,4 +200,6 @@ addGlobalPlugin(""" "com.gilt" % "sbt-dependency-graph-sugar" % "0.7.5-1" """, "
 
 addGlobalPlugin(""" "com.dwijnand.sbtprojectgraph" % "sbt-project-graph" % "0.1.0" """, "projectsGraphDot")
 
-addGlobalPlugin(""" "com.timushev.sbt" % "sbt-updates" % "0.1.10" """, "dependencyUpdates")
+addGlobalPlugin(""" "com.timushev.sbt" % "sbt-updates" % "0.3.0" """, "dependencyUpdates")
+
+javacOptions in (Compile, doc) ~= { Seq("-locale", "en_US") ++ _ }
